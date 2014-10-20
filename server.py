@@ -9,26 +9,29 @@ import SocketServer
 import sys
 
 
-class EchoHandler(SocketServer.DatagramRequestHandler):
+VERSION = "SIP/1.0"
+class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
     """
     Echo server class
     """
 
     def handle(self):
-        # Escribe dirección y puerto del cliente (de tupla client_address)
-        self.wfile.write("Hemos recibido tu peticion")
+        dic_client = {}
+        self.wfile.write(VERSION + " 200 " + 'OK\r\n\r\n')
         print self.client_address
         while 1:
             # Leyendo línea a línea lo que nos envía el cliente
-            line = self.rfile.read()
-            if not line:
+            mensaje = self.rfile.read()
+            if not mensaje:
                 break
-            print "El cliente nos manda " + line
+            lista_mensaje = mensaje.split(" ")
+            dic_client[lista_mensaje[1]] = self.client_address[0]
+            print mensaje + " " + VERSION + '\r\n\r\n'
 
 PUERTO = int(sys.argv[1])
 
 if __name__ == "__main__":
     # Creamos servidor de eco y escuchamos
-    serv = SocketServer.UDPServer(("", PUERTO), EchoHandler)
+    serv = SocketServer.UDPServer(("", PUERTO), SIPRegisterHandler)
     print "Lanzando servidor UDP de eco..."
     serv.serve_forever()
