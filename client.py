@@ -12,17 +12,22 @@ import sys
 # Dirección IP del servidor.
 SERVER = sys.argv[1]
 PORT = int(sys.argv[2])
+REGISTER = sys.argv[4]
 
 # Contenido que vamos a enviar
-LINE = ''.join(sys.argv[3:])
+#LINE = ' '.join(sys.argv[3:])
 
 # Creamos el socket, lo configuramos y lo atamos a un servidor/puerto
 my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 my_socket.connect((SERVER, PORT))
 
-print "Enviando: " + LINE
-my_socket.send(LINE + '\r\n')
+#print "Enviando: " + LINE
+#my_socket.send(LINE + '\r\n')
+#data = my_socket.recv(1024)
+if sys.argv[3] == "register":
+    my_socket.send("REGISTER " + REGISTER + " SIP/1.0\r\n\r\n")
+
 data = my_socket.recv(1024)
 
 print 'Recibido -- ', data
