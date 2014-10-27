@@ -9,15 +9,12 @@ import SocketServer
 import sys
 
 
-VERSION = "SIP/1.0"
 class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
     """
     Echo server class
     """
-
+    dic_client = {}
     def handle(self):
-        dic_client = {}
-        self.wfile.write(VERSION + " 200 " + 'OK\r\n\r\n')
         print self.client_address
         while 1:
             # Leyendo línea a línea lo que nos envía el cliente
@@ -25,8 +22,15 @@ class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
             if not mensaje:
                 break
             lista_mensaje = mensaje.split(" ")
-            dic_client[lista_mensaje[1]] = self.client_address[0]
-            print mensaje + " " + VERSION + '\r\n\r\n'
+            Sip = lista_mensaje[1]
+            self.dic_client[Sip] = self.client_address[0]
+            if lista_mensaje[0] == "REGISTER":
+                self.wfile.write(lista_mensaje[2] + " 200 " + 'OK\r\n\r\n')
+            # Borramos en caso de expires 0
+            if int(lista_mensaje[4]) == 0:
+                del self.dic_client[Sip]
+            print mensaje + " " + lista_mensaje[2] + '\r\n\r\n'
+            print self.dic_client
 
 PUERTO = int(sys.argv[1])
 
