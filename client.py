@@ -30,7 +30,7 @@ my_socket.connect((SERVER, PORT))
 #print "Enviando: " + LINE
 #my_socket.send(LINE + '\r\n')
 
-my_socket.send("REGISTER " + "sip:" + REGISTER + " SIP/1.0\r\n" + "Expires: " +
+my_socket.send("REGISTER " + "sip:" + REGISTER + " SIP/2.0\r\n" + "Expires: " +
                EXPIRES + "\r\n\r\n")
 
 data = my_socket.recv(1024)
