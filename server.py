@@ -17,17 +17,19 @@ class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
     def handle(self):
         print "El cliente nos manda:"
         while 1:
-            line = self.rfile.read()
-            print line
-            Lista = line.split(' ')
-            TYPE = Lista[0]
-            if TYPE == "REGISTER":
-                DIREC_SIP = Lista[1].split(':')[1]
-                Dic_User[DIREC_SIP] = self.client_address[0]
-                self.wfile.write("SIP/1.0 200 OK\r\n\r\n")
-                print "Los usuarios son:" + '\r\n' + str(Dic_User)
-            if not line:
+            Line = self.rfile.read()
+            print Line
+            if not Line:
                 break
+            else:
+                List = Line.split(' ')
+                Direccion_SIP = List[1].split(':')[1]
+                Dic_User[Direccion_SIP] = self.client_address[0]
+                self.wfile.write("SIP/1.0 200 OK\r\n\r\n")
+                Expires = int(List[3])
+                if Expires == 0:
+                    del Dic_User[Direccion_SIP]
+                print "Los ususarios son:" + '\r\n' + str(Dic_User)
 
 if __name__ == "__main__":
     Dic_User = {}
