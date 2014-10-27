@@ -47,7 +47,7 @@ class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
                     if time.time() >= dic_user[user][1]:
                         del dic_user[user]
                         self.register2file()
-                self.wfile.write("SIP/1.0 200 OK\r\n\r\n")
+                self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
 
 if __name__ == "__main__":
     dic_user = {}
