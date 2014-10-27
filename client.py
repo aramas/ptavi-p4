@@ -10,9 +10,14 @@ import sys
 # Cliente UDP simple.
 
 # Dirección IP del servidor.
+if len(sys.argv) != 6:
+    sys.exit("Usage: client.py ip puerto register sip_address expires_value")
+
 SERVER = sys.argv[1]
 PORT = int(sys.argv[2])
 REGISTER = sys.argv[4]
+EXPIRES = sys.argv[5]
+
 
 # Contenido que vamos a enviar
 #LINE = ' '.join(sys.argv[3:])
@@ -24,9 +29,9 @@ my_socket.connect((SERVER, PORT))
 
 #print "Enviando: " + LINE
 #my_socket.send(LINE + '\r\n')
-#data = my_socket.recv(1024)
-if sys.argv[3] == "register":
-    my_socket.send("REGISTER " + REGISTER + " SIP/1.0\r\n\r\n")
+
+my_socket.send("REGISTER " + "sip:" + REGISTER + " SIP/1.0\r\n" + "Expires: " +
+                EXPIRES + "\r\n\r\n")
 
 data = my_socket.recv(1024)
 
