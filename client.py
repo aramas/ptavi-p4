@@ -10,6 +10,7 @@ import sys
 # Cliente UDP simple.
 
 lista = sys.argv
+# Comprobamos si hemos pasado los datos adecuados por linea de comandos.
 if len(lista) != 6:
     print "Usage: client.py ip puerto register sip_address expires_value"
     raise SystemExit
