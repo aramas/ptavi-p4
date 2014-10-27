@@ -22,8 +22,8 @@ class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
         Metodo para copiar los datos de los usuarios a un archivo
         """
         fich = open("registered.txt", "w")
-        campos = "User" + '\t' + "IP" + '\t' + "Expires" + '\r\n'
-        fich.write(campos)
+        CAMPOS = "User" + '\t' + "IP" + '\t' + "Expires" + '\r\n'
+        fich.write(CAMPOS)
         for Usuario in self.dic_client.keys():
             fich.write(Usuario + '\t' + self.dic_client[Usuario][0] + '\t'
                  + time.strftime('%Y-%m-%d %H:%M:%S', \
