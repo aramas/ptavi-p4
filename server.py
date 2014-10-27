@@ -18,13 +18,13 @@ class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
         """
         Archivo de Registros en formato .txt
         """
-        Archi = open('registered.txt', 'w')
-        for User in Dic_User.keys():
-            IP = Dic_User[User][0]
-            Time = time.strftime('%Y-%m-%d %H:%M:%S',
-                                 time.gmtime(Dic_User[User][1]))
-            Archi.write(User + '\t' + IP + '\t' + str(Time) + '\r\n')
-        Archi.close()
+        archi = open('registered.txt', 'w')
+        for user in dic_user.keys():
+            ip = dic_user[user][0]
+            time_exp = time.strftime('%Y-%m-%d %H:%M:%S',
+                                 time.gmtime(dic_user[user][1]))
+            archi.write(user + '\t' + ip + '\t' + str(time_exp) + '\r\n')
+        archi.close()
 
     def handle(self):
         """
@@ -32,26 +32,26 @@ class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
         """
         print "El cliente nos manda:"
         while 1:
-            Line = self.rfile.read()
-            print Line
-            if not Line:
+            line = self.rfile.read()
+            print line
+            if not line:
                 break
             else:
-                List = Line.split(' ')
-                Direc_SIP = List[1].split(':')[1]
-                IP = self.client_address[0]
-                Expires = time.time() + int(List[3])
-                Dic_User[Direc_SIP] = [IP, Expires]
+                lista = line.split(' ')
+                direc_sip = lista[1].split(':')[1]
+                ip = self.client_address[0]
+                expires = time.time() + int(lista[3])
+                dic_user[direc_sip] = [ip, expires]
                 self.register2file()
-                for User in Dic_User.keys():
-                    if time.time() >= Dic_User[User][1]:
-                        del Dic_User[User]
+                for user in dic_user.keys():
+                    if time.time() >= dic_user[user][1]:
+                        del dic_user[user]
                         self.register2file()
                 self.wfile.write("SIP/1.0 200 OK\r\n\r\n")
 
 if __name__ == "__main__":
-    Dic_User = {}
+    dic_user = {}
     PORT = int(sys.argv[1])
-    serv = SocketServer.UDPServer(("", PORT), SIPRegisterHandler)
+    SERV = SocketServer.UDPServer(("", PORT), SIPRegisterHandler)
     print "Lanzando servidor UDP de eco..."
-    serv.serve_forever()
+    SERV.serve_forever()
