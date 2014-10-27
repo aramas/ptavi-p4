@@ -21,8 +21,8 @@ class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
         archi = open('registered.txt', 'w')
         for user in dic_user.keys():
             ip = dic_user[user][0]
-            time_exp = time.strftime('%Y-%m-%d %H:%M:%S',
-                                 time.gmtime(dic_user[user][1]))
+            t = dic_user[user][1]
+            time_exp = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(t))
             archi.write(user + '\t' + ip + '\t' + str(time_exp) + '\r\n')
         archi.close()
 
