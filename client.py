@@ -14,7 +14,11 @@ if len(sys.argv) != 6:
     sys.exit("Usage: client.py ip puerto register sip_address expires_value")
 
 SERVER = sys.argv[1]
-PORT = int(sys.argv[2])
+try:
+    PORT = int(sys.argv[2])
+except ValueError:
+    print "NO SE ENCUENTRA EL PUERTO"
+    raise SystemExit
 REGISTER = sys.argv[4]
 EXPIRES = sys.argv[5]
 
