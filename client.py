@@ -17,24 +17,24 @@ LINE = ''
 if len(sys.argv) == 6:
     # Contenido que vamos a enviar
     if str(sys.argv[3]) == 'register':
-        if len(sys.argv) == 6:
-            LINE = 'REGISTER' + " sip:" + str(sys.argv[4]) + ' SIP/2.0\r\n' + "Expires: " + str(sys.argv[5]) + '\r\n\r\n'
-        else:
-            LINE = 'REGISTER' + " sip:" + str(sys.argv[4]) + ' SIP/2.0\r\n\r\n'
+            LINE = 'REGISTER' + " sip:" + str(sys.argv[4]) + ' SIP/2.0\r\n'
+            LINE += "Expires: " + str(sys.argv[5]) + '\r\n\r\n'
     else:
-        for i in sys.argv[3:]:
-            LINE = LINE + " " + str(i)
-    # Creamos el socket,configuramos y atamos a un servidor/puerto
-    my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    my_socket.connect((SERVER, PORT))
-    print "Enviando: " + LINE
-    my_socket.send(LINE + '\r\n')
-    data = my_socket.recv(1024)
-    print 'Recibido --', data
-    print "Terminando socket..."
-    # Cerramos todo
-    my_socket.close()
-    print "Fin."
+        print "REGISTER NOT FOUND"
+        raise SystemExit
 else:
     print "Usage: client.py ip puerto register sip_address expires_value"
+    raise SystemExit
+
+# Creamos el socket,configuramos y atamos a un servidor/puerto
+my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+my_socket.connect((SERVER, PORT))
+print "Enviando: " + LINE
+my_socket.send(LINE + '\r\n')
+data = my_socket.recv(1024)
+print 'Recibido --', data
+print "Terminando socket..."
+# Cerramos todo
+my_socket.close()
+print "Fin."
